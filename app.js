@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const router = require('./routes')
+const router = require('./apii/routes')
 const { sequelize } = require('./models');
 
 dotenv.config();
