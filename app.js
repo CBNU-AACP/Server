@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const router = require('./api/routes')
 const { sequelize } = require('./models');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -19,15 +20,21 @@ sequelize.sync({ force: false })    //force가 true이면 db에 있는 정보들
     console.error(err);
   })
 
+app.use(cors({
+  withCredentials: true,
+}));
+app.use(express.json());
+app.use(express.urlencoded({extended : true}));
 app.use(morgan('dev'));
 app.use('/', router);
-
 app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} router not existed`);
     error.status = 404;
     next(error);
   });
-  
+
+
+
 //error handler
 app.use((err, req, res, next) => {
     res.locals.message = err.message;
