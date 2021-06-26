@@ -18,7 +18,7 @@ module.exports = class CheckNode extends Sequelize.Model{
                 type : Sequelize.BOOLEAN,
                 allowNull : false,
                 default : false
-            }, 
+            },
         },{
             sequelize,
             timestamps : true,
@@ -30,4 +30,5 @@ module.exports = class CheckNode extends Sequelize.Model{
             collate : 'utf8_general_ci',
             });
     }
+
 };
