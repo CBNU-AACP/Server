@@ -1,13 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const memberRouter = require('./members');
+const classRouter = require('./classes');
 
-router.get('/', async(req,res,next)=>{
-    try {
-        console.log('hihi');
-        res.json("success");
-    } catch (error) {
-        console.error(error);
-        next(error);
-    }
-})
+router.use('/members', memberRouter);
+router.use('/classes', classRouter);
+
 module.exports = router;
