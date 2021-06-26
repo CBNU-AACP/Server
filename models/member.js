@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 
+//한 교과에 속한 멤버 모델입니다
+//처음 구조는 name (멤버 이름), mid (멤버 아이디)로 이루어져있습니다
 module.exports = class Member extends Sequelize.Model{
     static init(sequelize){
         return super.init({
@@ -7,7 +9,7 @@ module.exports = class Member extends Sequelize.Model{
                 type: Sequelize.STRING(20),
                 allowNull : false,
             },
-            sid : {
+            mid : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
             },

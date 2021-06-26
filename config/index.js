@@ -1,6 +1,8 @@
 require('dotenv').config();
 const env = process.env;
 
+//mysql에서 개발/배포/생성 등 환경이 변할때 세팅을 편하게 할 수 있도록 만들었습니다 현재는 development로 설정되어있습니다
+
 const development = {
   username: env.MYSQL_USERNAME,
   password: env.MYSQL_PASSWORD,
