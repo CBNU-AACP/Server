@@ -2,7 +2,7 @@
 
 ### Project
 ---------
-+  [Client](https://github.com/Mobeom/MoBeom)
++  [Client](https://github.com/CBNU-AACP/Client)
 + Server
 
 ### contributer
