@@ -1,8 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const router = require('./routes')
+const router = require('./api/routes')
 const { sequelize } = require('./models');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 
 //db connect
-sequelize.sync({ force: false })
+sequelize.sync({ force: false })    //force가 true이면 db에 있는 정보들을 모두 지우고 다시 만듭니다(db 컬럼값에 변동이 생기면 바꿉시다)
   .then(() => {
     console.log('DB connected!');
   })
@@ -19,15 +20,21 @@ sequelize.sync({ force: false })
     console.error(err);
   })
 
+app.use(cors({
+  withCredentials: true,
+}));
+app.use(express.json());
+app.use(express.urlencoded({extended : true}));
 app.use(morgan('dev'));
 app.use('/', router);
-
 app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} router not existed`);
     error.status = 404;
     next(error);
   });
-  
+
+
+
 //error handler
 app.use((err, req, res, next) => {
     res.locals.message = err.message;
