@@ -29,5 +29,7 @@ Member.init(sequelize);
 Class.init(sequelize);
 CheckList.init(sequelize);
 CheckNode.init(sequelize);
+User.init(sequelize);
+User.associate(db);
 
 module.exports = db;

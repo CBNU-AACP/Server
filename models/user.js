@@ -10,6 +10,7 @@ module.exports = class User extends Sequelize.Model {
       userId: {
         type: Sequelize.STRING(20),
         allowNull: false,
+        primaryKey: true,
       },
       userPassword: {
         type: Sequelize.STRING(20),
