@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Member extends Sequelize.Model{
+module.exports = class Course extends Sequelize.Model{ 
     static init(sequelize){
         return super.init({
             name : {
                 type: Sequelize.STRING(20),
                 allowNull : false,
             },
-            memeberId : {
+            courseId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
             },
@@ -15,8 +15,8 @@ module.exports = class Member extends Sequelize.Model{
             sequelize,
             timestamps : true,
             underscored : false,
-            modelName : 'Member',
-            tableName : 'members',
+            modelName : 'Course',
+            tableName : 'courses',
             paranoid : false,
             charset : 'utf8',
             collate : 'utf8_general_ci',
