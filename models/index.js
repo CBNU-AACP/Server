@@ -2,16 +2,10 @@ const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development'; 
 const config = require('../config/index')[env];
 const Member = require('./member');
-<<<<<<< HEAD
 const Course = require('./course');
 const CourseDate = require('./courseDate');
 const AttendenceList = require('./attendenceList');
 const MemberList = require('./memberList');
-=======
-const Class = require('./class');
-const CheckList = require('./checkList');
-const CheckNode = require('./checkNode');
->>>>>>> 06dcfacec1fd8b0832c4c94c4805880a8c58e8c0
 const User = require('./user');
 // sequelize 객체를 생성하는 코드입니다
 
