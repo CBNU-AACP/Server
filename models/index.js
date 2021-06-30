@@ -5,6 +5,7 @@ const Member = require('./member');
 const Class = require('./class');
 const CheckList = require('./checkList');
 const CheckNode = require('./checkNode');
+const User = require('./user');
 // sequelize 객체를 생성하는 코드입니다
 
 // 먼저 sequelize 객체를 .env 정보에 기반하여 생성합니다
@@ -22,10 +23,13 @@ db.Member = Member;
 db.Class = Class;
 db.CheckList = CheckList;
 db.CheckNode = CheckNode;
+db.User = User;
 
 Member.init(sequelize);
 Class.init(sequelize);
 CheckList.init(sequelize);
 CheckNode.init(sequelize);
+User.init(sequelize);
+User.associate(db);
 
 module.exports = db;
