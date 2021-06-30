@@ -31,4 +31,9 @@ CourseData.init(sequelize);
 AttendenceList.init(sequelize);
 MemberList.init(sequelize);
 
+Course.associate(db);
+CourseData.associate(db);
+AttendenceList.associate(db);
+MemberList.associate(db);
+
 module.exports = db;

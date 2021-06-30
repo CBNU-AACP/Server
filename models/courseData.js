@@ -18,4 +18,9 @@ module.exports = class CourseData extends Sequelize.Model{
             collate : 'utf8_general_ci',
             });
     }
+
+    static associate(db){
+        db.CourseData.belongsTo(db.Course, {foreignKey : "courseId", targetKey : "courseId"});
+        db.CourseData.hasMany(db.AttendenceList, {foreignKey : "courseDataId", sourceKey : "courseDataId"});
+    }
 };

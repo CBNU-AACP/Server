@@ -22,4 +22,9 @@ module.exports = class Course extends Sequelize.Model{
             collate : 'utf8_general_ci',
             });
     }
+
+    static associate(db){
+        db.Course.hasMany(db.CourseData, {foreignKey : "courseId", sourceKey : "courseId"});        //courseData와 1대 다 관계
+        db.Course.hasMany(db.MemberList, {foreignKey : "courseId", soruceKey : "courseId"});         //memberList와 1대 1 관계
+    }
 };
