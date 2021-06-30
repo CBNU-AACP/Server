@@ -6,6 +6,7 @@ module.exports = class MemberList extends Sequelize.Model{
             memberListId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
+                primaryKey : true,
             }
         },{
             sequelize,
@@ -19,6 +20,7 @@ module.exports = class MemberList extends Sequelize.Model{
             });
     }
     static associate(db){
-        db.MemberList.hasOne(db.MemberList, {foreignKey : "memberId", sourceKey : "memberListId"});
+        db.MemberList.hasOne(db.AttendenceList, {foreignKey : "memberListId", sourceKey : "memberListId"});
+        db.MemberList.hasMany(db.Member, {foreignKey : "memberListId", sourceKey : "memberListId"});
     }
 };

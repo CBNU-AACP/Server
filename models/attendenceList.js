@@ -3,10 +3,6 @@ const Sequelize = require('sequelize');
 module.exports = class AttendenceList extends Sequelize.Model{ 
     static init(sequelize){
         return super.init({
-            attendenceListId : {
-                type: Sequelize.INTEGER,
-                allowNull : true,
-            },
             isChecked : {
                 type : Sequelize.BOOLEAN,
                 allowNull : false,
@@ -25,7 +21,7 @@ module.exports = class AttendenceList extends Sequelize.Model{
     }
 
     static associate(db){
-        db.AttendenceList.belongsTo(db.CourseData, {foreignKey : "courseDataId", targetKey : "courseDataId"});
-        db.AttendenceList.belongsTo(db.MemberList, {foreignKey : "memberId", targetKey : "memberListId"})
+        db.AttendenceList.belongsTo(db.CourseDate, {foreignKey : "courseDateId", targetKey : "courseDateId"});
+        db.AttendenceList.belongsTo(db.MemberList, {foreignKey : "memberListId", targetKey : "memberListId"})
     }
 };

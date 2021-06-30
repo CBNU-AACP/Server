@@ -3,9 +3,10 @@ const env = process.env.NODE_ENV || 'development';
 const config = require('../config/index')[env];
 const Member = require('./member');
 const Course = require('./course');
-const CourseData = require('./courseData');
+const CourseDate = require('./courseDate');
 const AttendenceList = require('./attendenceList');
 const MemberList = require('./memberList');
+const User = require('./user');
 // sequelize 객체를 생성하는 코드입니다
 
 // 먼저 sequelize 객체를 .env 정보에 기반하여 생성합니다
@@ -21,19 +22,23 @@ const db = {};
 db.sequelize = sequelize;
 db.Member = Member;
 db.Course = Course;
-db.CourseData = CourseData;
+db.CourseDate = CourseDate;
 db.AttendenceList = AttendenceList;
 db.MemberList = MemberList;
+db.User = User;
 
 Member.init(sequelize);
 Course.init(sequelize);
-CourseData.init(sequelize);
+CourseDate.init(sequelize);
 AttendenceList.init(sequelize);
 MemberList.init(sequelize);
+User.init(sequelize);
 
+Member.associate(db);
 Course.associate(db);
-CourseData.associate(db);
+CourseDate.associate(db);
 AttendenceList.associate(db);
 MemberList.associate(db);
+User.associate(db);
 
 module.exports = db;

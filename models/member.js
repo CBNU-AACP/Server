@@ -10,6 +10,7 @@ module.exports = class Member extends Sequelize.Model{
             memeberId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
+                primaryKey : true,
             },
         },{
             sequelize,
@@ -21,5 +22,10 @@ module.exports = class Member extends Sequelize.Model{
             charset : 'utf8',
             collate : 'utf8_general_ci',
             });
+    }
+
+    static associate(db) {  //User와 Meber 1:1 관계 설정
+        db.Member.belongsTo(db.User, { foreignKey: 'userId', targetKey: 'userId'});
+        db.Member.belongsTo(db.MemberList,{foreignKey : "memberListId", targetKey : "memberListId"});
     }
 };

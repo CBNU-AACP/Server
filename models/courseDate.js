@@ -1,18 +1,19 @@
 const Sequelize = require('sequelize');
 
-module.exports = class CourseData extends Sequelize.Model{ 
+module.exports = class CourseDate extends Sequelize.Model{ 
     static init(sequelize){
         return super.init({
-             courseDataId : {
+             courseDateId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
+                primaryKey : true,
             }
         },{
             sequelize,
             timestamps : true,
             underscored : false,
-            modelName : 'CourseData',
-            tableName : 'coursedatas',
+            modelName : 'CourseDate',
+            tableName : 'coursedates',
             paranoid : false,
             charset : 'utf8',
             collate : 'utf8_general_ci',
@@ -20,7 +21,7 @@ module.exports = class CourseData extends Sequelize.Model{
     }
 
     static associate(db){
-        db.CourseData.belongsTo(db.Course, {foreignKey : "courseId", targetKey : "courseId"});
-        db.CourseData.hasMany(db.AttendenceList, {foreignKey : "courseDataId", sourceKey : "courseDataId"});
+        db.CourseDate.belongsTo(db.Course, {foreignKey : "courseId", targetKey : "courseId"});
+        db.CourseDate.hasMany(db.AttendenceList, {foreignKey : "courseDateId", sourceKey : "courseDateId"});
     }
 };

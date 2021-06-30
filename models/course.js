@@ -10,6 +10,7 @@ module.exports = class Course extends Sequelize.Model{
             courseId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
+                primaryKey : true,
             },
         },{
             sequelize,
@@ -24,7 +25,7 @@ module.exports = class Course extends Sequelize.Model{
     }
 
     static associate(db){
-        db.Course.hasMany(db.CourseData, {foreignKey : "courseId", sourceKey : "courseId"});        //courseData와 1대 다 관계
+        db.Course.hasMany(db.CourseDate, {foreignKey : "courseId", sourceKey : "courseId"});        //courseDate와 1대 다 관계
         db.Course.hasMany(db.MemberList, {foreignKey : "courseId", soruceKey : "courseId"});         //memberList와 1대 1 관계
     }
 };
