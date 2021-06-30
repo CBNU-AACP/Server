@@ -26,4 +26,10 @@ module.exports = class User extends Sequelize.Model {
       collate: 'utf8_general_ci',
     });
   }
+
+  static associate(db) {  //User와 Meber 1:1 관계 설정
+    db.User.hasOne(db.Member, { foreignKey: 'userId', sourceKey: 'userId'});
+  }
+
 };
+

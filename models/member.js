@@ -24,4 +24,9 @@ module.exports = class Member extends Sequelize.Model {
       collate: 'utf8_general_ci',
     });
   }
+
+  static associate(db) {  //User와 Meber 1:1 관계 설정
+    db.Member.belongsTo(db.User, { foreignKey: 'userId', sourceKey: 'userId'});
+  }
+
 };
