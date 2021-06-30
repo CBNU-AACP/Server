@@ -12,7 +12,7 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 
 //db connect
-sequelize.sync({ force: false })    //force가 true이면 db에 있는 정보들을 모두 지우고 다시 만듭니다(db 컬럼값에 변동이 생기면 바꿉시다)
+sequelize.sync({ force: true })    //force가 true이면 db에 있는 정보들을 모두 지우고 다시 만듭니다(db 컬럼값에 변동이 생기면 바꿉시다)
   .then(() => {
     console.log('DB connected!');
   })
@@ -32,8 +32,6 @@ app.use((req, res, next) => {
     error.status = 404;
     next(error);
   });
-
-
 
 //error handler
 app.use((err, req, res, next) => {

@@ -1,27 +1,31 @@
 const Sequelize = require('sequelize');
 
-//클래스(교과) 모델입니다
-//처음 구조는 name (클래스 이름), cid (클래스 아이디)로 이루어져있습니다
-module.exports = class CLass extends Sequelize.Model{ 
+module.exports = class Course extends Sequelize.Model{ 
     static init(sequelize){
         return super.init({
             name : {
                 type: Sequelize.STRING(20),
                 allowNull : false,
             },
-            cid : {
+            courseId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
+                primaryKey : true,
             },
         },{
             sequelize,
             timestamps : true,
             underscored : false,
-            modelName : 'Class',
-            tableName : 'classes',
+            modelName : 'Course',
+            tableName : 'courses',
             paranoid : false,
             charset : 'utf8',
             collate : 'utf8_general_ci',
             });
+    }
+
+    static associate(db){
+        db.Course.hasMany(db.CourseDate, {foreignKey : "courseId", sourceKey : "courseId"});        //courseDate와 1대 다 관계
+        db.Course.hasMany(db.MemberList, {foreignKey : "courseId", soruceKey : "courseId"});         //memberList와 1대 1 관계
     }
 };
