@@ -1,4 +1,4 @@
-const {Class} = require('../../../../models');
+const {Course} = require('../../../../models');
 
 const createClass = async(req,res,next)=>{
     const {body} = req;

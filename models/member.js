@@ -12,6 +12,10 @@ module.exports = class Member extends Sequelize.Model{
                 allowNull : true,
                 primaryKey : true,
             },
+            count : {
+                type: Sequelize.INTEGER,
+                allowNull : true,
+            }
         },{
             sequelize,
             timestamps : true,
@@ -27,5 +31,6 @@ module.exports = class Member extends Sequelize.Model{
     static associate(db) {  //User와 Meber 1:1 관계 설정
         db.Member.belongsTo(db.User, { foreignKey: 'userId', targetKey: 'userId'});
         db.Member.belongsTo(db.MemberList,{foreignKey : "memberListId", targetKey : "memberListId"});
+        db.Member.hasMany(db.Course, {foreignKey:"memberId", sourceKey:"memberId"})
     }
 };
