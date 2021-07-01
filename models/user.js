@@ -16,6 +16,11 @@ module.exports = class User extends Sequelize.Model {
         type: Sequelize.STRING(20),
         allowNull: false,
       },
+      count : {
+          type: Sequelize.INTEGER,
+          allowNull : false,
+          defaultValue : 0,
+      }
     }, {
       sequelize,
       timestamps: true,
@@ -30,7 +35,7 @@ module.exports = class User extends Sequelize.Model {
 
   static associate(db) {  //User와 Meber 1:1 관계 설정
     db.User.hasOne(db.Member, { foreignKey: 'userId', sourceKey: 'userId'});
+    db.User.hasMany(db.Course, {foreignKey:'userId', sourceKey:'userId'});
   }
-
 };
 
