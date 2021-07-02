@@ -7,11 +7,11 @@ module.exports = class Member extends Sequelize.Model{
                 type: Sequelize.STRING(20),
                 allowNull : false,
             },
-            memeberId : {
+            memberId : {
                 type: Sequelize.INTEGER,
                 allowNull : true,
                 primaryKey : true,
-            },
+            }
         },{
             sequelize,
             timestamps : true,

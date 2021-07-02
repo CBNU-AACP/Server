@@ -8,7 +8,7 @@ module.exports = class Course extends Sequelize.Model{
                 allowNull : false,
             },
             courseId : {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING(20),
                 allowNull : true,
                 primaryKey : true,
             },
@@ -26,6 +26,14 @@ module.exports = class Course extends Sequelize.Model{
 
     static associate(db){
         db.Course.hasMany(db.CourseDate, {foreignKey : "courseId", sourceKey : "courseId"});        //courseDate와 1대 다 관계
-        db.Course.hasMany(db.MemberList, {foreignKey : "courseId", soruceKey : "courseId"});         //memberList와 1대 1 관계
+        db.Course.hasOne(db.MemberList, {foreignKey : "courseId", soruceKey : "courseId"});         //memberList와 1대 1 관계
+        db.Course.belongsTo(db.User, {foreignKey:"userId", sourceKey:"userId"});    }
+
+    static increaseCount(db){
+        db.Course.addHook('afterCreate',async(course,options)=>{
+            const user = await db.User.findByPk(course.userId);
+            let count = user.count+1;
+            await user.update({count});
+        })
     }
 };

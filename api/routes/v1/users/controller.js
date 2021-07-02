@@ -6,6 +6,7 @@ const createUser = async(req,res,next)=>{
         const user = await User.create(body);
         res.json({message: 'success'});
     } catch (error) {
+        console.error(error);
         next(error);
     }
 }
@@ -22,6 +23,7 @@ const logIn = async(req,res,next)=>{
           res.json({message: 'success'});
         }
     } catch (error) {
+        console.error(error);
         next(error);
     }
 }
