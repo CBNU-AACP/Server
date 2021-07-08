@@ -41,6 +41,6 @@ AttendenceList.associate(db);
 MemberList.associate(db);
 User.associate(db);
 
-Course.increaseCount(db);
+Course.changeCount(db);
 
 module.exports = db;
