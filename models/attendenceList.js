@@ -22,6 +22,6 @@ module.exports = class AttendenceList extends Sequelize.Model{
 
     static associate(db){
         db.AttendenceList.belongsTo(db.CourseDate, {foreignKey : "courseDateId", targetKey : "courseDateId"});
-        db.AttendenceList.belongsTo(db.MemberList, {foreignKey : "memberListId", targetKey : "memberListId"})
+        db.AttendenceList.belongsTo(db.MemberList, {foreignKey : "memberListId", targetKey : "id"})
     }
 };
