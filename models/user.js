@@ -13,7 +13,7 @@ module.exports = class User extends Sequelize.Model {
         primaryKey: true,
       },
       userPassword: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       count : {
