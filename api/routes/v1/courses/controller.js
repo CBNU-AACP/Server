@@ -15,6 +15,32 @@ const createCourse = async(req,res,next)=>{
     }
 }
 
+const putCourse = async(req,res,next)=>{
+    const {params:{courseId}, body} = req;
+    try {
+        const course = await Course.findByPk(courseId);
+        if(!course) return res.send("not existed");
+        const updatedCourse = await course.update(body);
+        res.json(updatedCourse);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
+
+const deleteCourse = async(req,res,next)=>{
+    const {params:{courseId}} = req;
+    try {
+        const course = await Course.findByPk(courseId);
+        if(!course) return res.send("not existed");
+        await course.destroy();
+        res.json(course);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
+
 const calcCourseId = (count,userId)=>{
     let date = new Date();
     let month = date.getMonth()+1;
@@ -27,4 +53,4 @@ const calcCourseId = (count,userId)=>{
     return result;
 }
 
-module.exports = {createCourse}
+module.exports = {createCourse, putCourse, deleteCourse};

@@ -29,11 +29,17 @@ module.exports = class Course extends Sequelize.Model{
         db.Course.hasOne(db.MemberList, {foreignKey : "courseId", soruceKey : "courseId"});         //memberList와 1대 1 관계
         db.Course.belongsTo(db.User, {foreignKey:"userId", sourceKey:"userId"});    }
 
-    static increaseCount(db){
+    static changeCount(db){
         db.Course.addHook('afterCreate',async(course,options)=>{
             const user = await db.User.findByPk(course.userId);
             let count = user.count+1;
             await user.update({count});
         })
+        db.Course.addHook('beforeDestroy',async(course,options)=>{
+            const user = await db.User.findByPk(course.userId);
+            let count = user.count-1;
+            await user.update({count});
+        })
     }
+
 };
