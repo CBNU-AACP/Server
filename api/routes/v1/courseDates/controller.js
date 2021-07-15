@@ -27,7 +27,8 @@ const getCurrentDate = () =>{
     const now = new Date();
     const month = (now.getMonth()+1).toString();
     const date = now.getDate().toString();
-    return month+date; 
+    const hours = now.getHours().toString();
+    return month+date+hours; 
 }
 
 module.exports = {findOrCreateCourseDate};
