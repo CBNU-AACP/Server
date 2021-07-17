@@ -1,5 +1,30 @@
 const {Course, User} = require('../../../../models');
 
+const getCourse = async(req,res,next)=>{
+    const {params:{courseId}} = req;
+    try {
+        const course = await Course.findOne({where:{courseId}});
+        if(!course) return res.send("not existed");
+        res.json(course);
+    } catch (error) {
+        console.error(error);
+        next(error);    
+    }
+}
+
+const getCourses = async(req,res,next)=>{
+    const {params:{userId}} = req;
+    try {
+        const user = await User.findByPk(userId);
+        if(!user) return res.send("user not existed");
+        const courses = await Course.findAll({where:{userId}});
+        res.json(courses);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
+
 const createCourse = async(req,res,next)=>{
     const {body:{name},params:{userId}} = req;
     try {
@@ -53,4 +78,4 @@ const createCourseId = (count,courseName)=>{
     return year + month + name + milie + expandCount;
 }
 
-module.exports = {createCourse, putCourse, deleteCourse};
+module.exports = {createCourse, putCourse, deleteCourse, getCourses, getCourse};

@@ -12,6 +12,10 @@ module.exports = class Course extends Sequelize.Model{
                 allowNull : true,
                 primaryKey : true,
             },
+            description : {
+                type : Sequelize.TEXT,
+                allowNull : true
+            }
         },{
             sequelize,
             timestamps : true,
