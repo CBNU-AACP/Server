@@ -84,8 +84,9 @@ const searchCourse = async(req,res,next)=>{
     try {
         const user = await User.findByPk(userId);
         if(!user) return res.send("user not existed");
+        let decodedValue = decodeURIComponent(value);       //한글이 넘어오는 것을 고려해서 
         const course = await user.getCourses(
-            {where:{name:{[Op.like]:"%"+value+"%"}},
+            {where:{name:{[Op.like]:"%"+decodedValue+"%"}},
             attributes:['name','courseId', 'description','createdAt']});
         res.json(course);       
     } catch (error) {
