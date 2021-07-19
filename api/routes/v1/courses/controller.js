@@ -1,13 +1,38 @@
 const {Course, User} = require('../../../../models');
+const {Op} = require('sequelize');
+
+const getCourse = async(req,res,next)=>{
+    const {params:{courseId}} = req;
+    try {
+        const course = await Course.findByPk(courseId,{attributes:['name','courseId', 'description','createdAt']});
+        if(!course) return res.send("not existed");
+        res.json(course);
+    } catch (error) {
+        console.error(error);
+        next(error);    
+    }
+}
+
+const getCourses = async(req,res,next)=>{
+    const {params:{userId}} = req;
+    try {
+        const user = await User.findByPk(userId);
+        if(!user) return res.send("user not existed");
+        const courses = await user.getCourses({attributes:['name','courseId', 'description','createdAt'],order:['name']});
+        res.json(courses);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
 
 const createCourse = async(req,res,next)=>{
-    const {body:{name},params:{userId}} = req;
+    const {body:{name, description},params:{userId}} = req;
     try {
-        const user = await User.findOne({where:{userId}});
-        if(!user) res.send("fail");
+        const user = await User.findByPk(userId);
+        if(!user) res.send("juser not existed");
         let courseId = createCourseId(user.count, user.name);
-        const course = await Course.create({name,courseId,userId});       //body에는 name만 담기게 된다
-        await user.addCourse(course);
+        const course = await Course.create({name,courseId,description,userId});       //body에는 name만 담기게 된다
         res.json(course);
     } catch (error) {
         console.error(error);
@@ -28,6 +53,19 @@ const putCourse = async(req,res,next)=>{
     }
 }
 
+const deleteCourses = async(req,res,next)=>{
+    const {params:{userId}} = req;
+    try {
+        const user = await User.findByPk(userId);
+        if(!user) return res.send("user not existed");
+        await Course.destroy({where:{userId}});
+        res.send("delete success");
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+
 const deleteCourse = async(req,res,next)=>{
     const {params:{courseId}} = req;
     try {
@@ -35,6 +73,22 @@ const deleteCourse = async(req,res,next)=>{
         if(!course) return res.send("not existed");
         await course.destroy();
         res.json(course);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
+
+const searchCourse = async(req,res,next)=>{
+    const {params:{userId}, query:{value}} = req;
+    try {
+        const user = await User.findByPk(userId);
+        if(!user) return res.send("user not existed");
+        let decodedValue = decodeURIComponent(value);       //한글이 넘어오는 것을 고려해서 
+        const course = await user.getCourses(
+            {where:{name:{[Op.like]:"%"+decodedValue+"%"}},
+            attributes:['name','courseId', 'description','createdAt']});
+        res.json(course);       
     } catch (error) {
         console.error(error);
         next(error);
@@ -53,4 +107,4 @@ const createCourseId = (count,courseName)=>{
     return year + month + name + milie + expandCount;
 }
 
-module.exports = {createCourse, putCourse, deleteCourse};
+module.exports = {createCourse, putCourse, deleteCourse, deleteCourses, getCourses, getCourse, searchCourse};
