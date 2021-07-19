@@ -4,7 +4,7 @@ module.exports = class CourseDate extends Sequelize.Model{
     static init(sequelize){
         return super.init({
              courseDateId : {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING(30),
                 allowNull : true,
                 primaryKey : true,
             }
