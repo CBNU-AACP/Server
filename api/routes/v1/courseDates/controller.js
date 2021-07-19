@@ -6,12 +6,12 @@ const findOrCreateCourseDate = async(req,res,next)=>{
         const course = await Course.findByPk(courseId);     //course를 먼저 찾아둔다
         if(!course) return res.send("course not existed");
         const courseDateId = customCourseId(course.courseId);
-        const {courseDate, created} = await CourseDate.findOrCreate({
+        const courseDate = await CourseDate.findOrCreate({
             where:{courseDateId},
             defaults:{courseDateId}
         })
         await course.addCourseDate(courseDateId);
-        res.json(created);
+        res.json(courseDate);
     } catch (error) {
         console.error(error);
         next(error);
