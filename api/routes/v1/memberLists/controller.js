@@ -6,6 +6,8 @@ const createMemberList = async(req,res,next)=>{
         const course = await Course.findByPk(courseId);
         const memberList = await MemberList.create();
         await course.setMemberList(memberList);
+        const attendenceList = await AttendenceList.create();   
+        await memberList.setAttendenceList(attendenceList);     //MemberList와 AttendenceList의 관계가 안지어져 있어서 추가
         res.json(memberList);
     } catch (error) {
         console.error(error);
@@ -26,8 +28,6 @@ const enrollMembers = async(req,res,next)=>{
         )
         const count = existed.length;     //response로 개수 정보도 함께 넘겨준다
         await memberList.addMembers(existed.map(item=>item));      //item에 다른 값들은 제외하고 memberId로 찾는다
-        const attendenceList = await AttendenceList.create();   
-        await memberList.setAttendenceList(attendenceList);     //MemberList와 AttendenceList의 관계가 안지어져 있어서 추가
         res.json({count});      
     } catch (error) {
         console.error(error);
