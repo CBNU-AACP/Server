@@ -1,7 +1,7 @@
-const { User, AttendenceList, MemberList } = require('../../../../models');
+const { User, Member, AttendenceList, MemberList, CourseDate, } = require('../../../../models');
 
 const updateAttendenceList = async(req,res,next) => {
-  const { userId, validNum } = req.body;
+  const { userId, validNum, courseDateId } = req.body;
   try {
     const user = await User.findOne({ where: {userId} });    
     if(user == null){

@@ -1,4 +1,4 @@
-const {Member ,Course, MemberList} = require('../../../../models');
+const {Member ,Course, MemberList, AttendenceList} = require('../../../../models');
 
 const createMemberList = async(req,res,next)=>{
     const {params:{courseId}} = req;
@@ -26,6 +26,8 @@ const enrollMembers = async(req,res,next)=>{
         )
         const count = existed.length;     //response로 개수 정보도 함께 넘겨준다
         await memberList.addMembers(existed.map(item=>item));      //item에 다른 값들은 제외하고 memberId로 찾는다
+        const attendenceList = await AttendenceList.create();   
+        await memberList.setAttendenceList(attendenceList);     //MemberList와 AttendenceList의 관계가 안지어져 있어서 추가
         res.json({count});      
     } catch (error) {
         console.error(error);
