@@ -12,7 +12,6 @@ router.use('/courses', courseRouter);
 router.use('/users', userRouter);
 router.use('/memberLists', memberListRouter);
 router.use('/attendenceLists', attendenceListRouter);
-
 router.use('/courseDates', courseDateRouter);
 
 module.exports = router;
