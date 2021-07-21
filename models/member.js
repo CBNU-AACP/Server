@@ -9,8 +9,12 @@ module.exports = class Member extends Sequelize.Model{
             },
             memberId : {
                 type: Sequelize.INTEGER,
-                allowNull : true,
+                allowNull : true, //이거 null이어도 되는지 다시 한번 생각해보기
                 primaryKey : true,
+            },      
+            validNum: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
             }
         },{
             sequelize,
