@@ -1,4 +1,4 @@
-const {CourseDate, Course} = require('../../../../models');
+const {CourseDate, Course, Member} = require('../../../../models');
 
 const findOrCreateCourseDate = async(req,res,next)=>{
     const {params:{courseId}} = req;
@@ -10,17 +10,17 @@ const findOrCreateCourseDate = async(req,res,next)=>{
             where:{courseDateId},
             defaults:{courseDateId}
         })
-        await course.addCourseDate(courseDateId);
-        //여기서부터 courseDate와 attendenceList 관계 지어주는 코드
-        const memberList = await course.getMemberList();  //넘겨받은 courseId로부터 찾은 course와 관계지어진 memberList를 찾는다.
-        if(memberList == null)
-        {
-          return res.status(400).json({
-          message: 'memberList does not exist' // 400 상태와 함께 멤버 리스트가 존재하지 않는다는 실패 메세지를 보낸다.
-          })
-        }
-        const attendenceList = await memberList.getAttendenceList();  //위에서 찾은 memberList와 관계지어진 attendenceList를 찾는다.
-        await courseDate.setAttendenceList(attendenceList); //위에서 찾은 attendenceList과 여기서 생성한 courseDate와 관계를 지어준다.
+
+        const memberList = await course.getMemberList(); 
+        const users = await memberList.getUsers();
+
+        users.forEach(async element => {
+          let member = await Member.create();
+          await courseDate[0].addMember(member);
+          await element.addMember(member);
+          await memberList.addMember(member);
+        });
+
         res.json(courseDate);
     } catch (error) {
         console.error(error);

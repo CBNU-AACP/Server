@@ -21,7 +21,6 @@ module.exports = class CourseDate extends Sequelize.Model{
     }
 
     static associate(db){
-        db.CourseDate.belongsTo(db.Course, {foreignKey : "courseId", targetKey : "courseId"});
-        db.CourseDate.hasOne(db.AttendenceList, {foreignKey : "courseDateId", sourceKey : "courseDateId"});
+        db.CourseDate.hasMany(db.Member, {foreignKey : "courseDateId", sourceKey : "courseDateId"});
     }
 };
