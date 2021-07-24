@@ -4,7 +4,6 @@ const config = require('../config/index')[env];
 const Member = require('./member');
 const Course = require('./course');
 const CourseDate = require('./courseDate');
-const AttendenceList = require('./attendenceList');
 const MemberList = require('./memberList');
 const User = require('./user');
 // sequelize 객체를 생성하는 코드입니다
@@ -23,21 +22,18 @@ db.sequelize = sequelize;
 db.Member = Member;
 db.Course = Course;
 db.CourseDate = CourseDate;
-db.AttendenceList = AttendenceList;
 db.MemberList = MemberList;
 db.User = User;
 
 Member.init(sequelize);
 Course.init(sequelize);
 CourseDate.init(sequelize);
-AttendenceList.init(sequelize);
 MemberList.init(sequelize);
 User.init(sequelize);
 
 Member.associate(db);
 Course.associate(db);
 CourseDate.associate(db);
-AttendenceList.associate(db);
 MemberList.associate(db);
 User.associate(db);
 
