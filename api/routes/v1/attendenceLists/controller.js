@@ -1,29 +1,13 @@
-const { User, Member, MemberList, CourseDate, Course, } = require('../../../../models');
+const { Member } = require('../../../../models');
 
 const updateAttendenceList = async(req,res,next) => {
-  const { userId, validNum, courseDateId } = req.body;
+  const { userId } = req.body;
   try {
-    const user = await User.findOne({ where: {userId} });    
-    if(user == null){
-      return res.status(400).json({
-        message: 'Can not find that user' 
-      });
-    }
-    if(user.validNum != validNum) { //사용자가 보내온 QR code가 유효하지 않은 경우
-      return res.status(400).json({
-      message: 'Invalid QR code' 
-      });
-    }
-    const courseDate = await CourseDate.findByPk(courseDateId);
-    if(courseDate == null) {
-      return res.status(400).json({
-        message: 'Invalid courseDateId'
-      });
-    }
-    const members = await courseDate.getMembers();
-    members.forEach(async function(value, index) {
+    const members = await res.locals.courseDate.getMembers();
+    members.forEach(async function(value, index) { //함수 빼기 (메모리 누수!!! forEach 돌때마다 함수가 생김)
       try {           
         let checkAttendence = await value.getUsers({where: {userId: userId}});
+        console.log(checkAttendence);
         if(checkAttendence.length != 0)
         {
           const realMember = await Member.findByPk(value.id);
