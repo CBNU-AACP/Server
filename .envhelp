@@ -22,3 +22,7 @@ SECRET_KEY =
 ## COOKIE KEY 설정
 
 COOKIE_KEY =
+
+## SERVER URL 설정
+
+SERVER_URL = 
