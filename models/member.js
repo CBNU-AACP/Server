@@ -2,15 +2,10 @@ const Sequelize = require('sequelize');
 
 module.exports = class Member extends Sequelize.Model{
     static init(sequelize){
-        return super.init({
-            name : {
-                type: Sequelize.STRING(20),
-                allowNull : false,
-            },
-            memberId : {
-                type: Sequelize.INTEGER,
-                allowNull : true,
-                primaryKey : true,
+        return super.init({            
+            isChecked : {
+                type : Sequelize.BOOLEAN,
+                default : false
             }
         },{
             sequelize,
@@ -25,7 +20,8 @@ module.exports = class Member extends Sequelize.Model{
     }
 
     static associate(db) {  //User와 Meber 1:1 관계 설정
-        db.Member.belongsTo(db.User, { foreignKey: 'userId', targetKey: 'userId'});
-        db.Member.belongsTo(db.MemberList,{foreignKey : "memberListId", targetKey : "id"});
+        db.Member.belongsToMany(db.User, { through: 'UserMember'});
+        db.Member.belongsTo(db.MemberList, {foreignKey : "memberListId", targetKey : "id"});
+        db.Member.belongsTo(db.CourseDate, {foreignKey : "courseDateId", targetKey : "courseDateId"});
     }
 };

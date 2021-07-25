@@ -20,6 +20,18 @@ module.exports = class User extends Sequelize.Model {
           type: Sequelize.INTEGER,
           allowNull : false,
           defaultValue : 0,
+      },
+      studentId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },            
+      validNum: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },            
+      name : {
+        type: Sequelize.STRING(20),
+        allowNull : false,
       }
     }, {
       sequelize,
@@ -34,7 +46,8 @@ module.exports = class User extends Sequelize.Model {
   }
 
   static associate(db) {  //User와 Meber 1:1 관계 설정
-    db.User.hasOne(db.Member, { foreignKey: 'userId', sourceKey: 'userId'});
+    db.User.belongsToMany(db.Member, { through: 'UserMember'});
+    db.User.belongsToMany(db.MemberList, { through: 'UserMemberList'});
     db.User.hasMany(db.Course, {foreignKey:'userId', sourceKey:'userId'});
   }
 };

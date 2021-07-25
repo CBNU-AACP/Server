@@ -2,6 +2,6 @@ const { Router } = require('express');
 const controller = require('./controller');
 const router = Router();
 
-router.post('/:userId', controller.createMember);
+router.get('/:courseId', controller.findOrCreateCourseDate);
 
 module.exports = router;

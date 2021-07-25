@@ -4,7 +4,7 @@ module.exports = class CourseDate extends Sequelize.Model{
     static init(sequelize){
         return super.init({
              courseDateId : {
-                type: Sequelize.INTEGER,
+                type: Sequelize.STRING(30),
                 allowNull : true,
                 primaryKey : true,
             }
@@ -21,7 +21,6 @@ module.exports = class CourseDate extends Sequelize.Model{
     }
 
     static associate(db){
-        db.CourseDate.belongsTo(db.Course, {foreignKey : "courseId", targetKey : "courseId"});
-        db.CourseDate.hasMany(db.AttendenceList, {foreignKey : "courseDateId", sourceKey : "courseDateId"});
+        db.CourseDate.hasMany(db.Member, {foreignKey : "courseDateId", sourceKey : "courseDateId"});
     }
 };
