@@ -26,3 +26,8 @@ COOKIE_KEY =
 ## SERVER URL 설정
 
 SERVER_URL = 
+
+
+## Development Level 혹은 Production Level 설정
+NODE_ENV=development
+#NODE_ENV=production
