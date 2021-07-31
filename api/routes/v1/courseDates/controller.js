@@ -1,10 +1,12 @@
 const {CourseDate, Course, Member} = require('../../../../models');
+const { COURSE_NOT_FOUND } = require('../../../../errors/index');
+const { createResponse } = require('../../../../utils/response');
 
 const findOrCreateCourseDate = async(req,res,next)=>{
     const {params:{courseId}} = req;
     try {
         const course = await Course.findByPk(courseId);     //course를 먼저 찾아둔다
-        if(!course) return res.send("course not existed");
+        if(!course) return next(COURSE_NOT_FOUND);
         const courseDateId = customCourseId(course.courseId);
         const courseDate = await CourseDate.findOrCreate({
             where:{courseDateId},
@@ -23,8 +25,7 @@ const findOrCreateCourseDate = async(req,res,next)=>{
             await memberList.addMember(member);
           }
         });
-        
-        return res.json(courseDate);
+        return res.json(createResponse(res, courseDate));
     } catch (error) {
         console.error(error);
         next(error);

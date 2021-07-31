@@ -5,6 +5,7 @@ const { sequelize } = require('./models');
 const cors = require('cors');
 const { stream } = require('./errors/winston');
 const { IS_DEV, PORT, NODE_ENV } = require('./env');
+const { notFound, errorHandler } = require('./errors/handler');
 
 const app = express();
 
@@ -26,22 +27,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(morgan(IS_DEV ? 'dev' : 'combined', {stream})); //개발 상태일땐 'dev'옵션, 배포 상태일땐 'combined'옵션 사용.
 app.use('/', router);
-app.use((req, res, next) => {
-    const error = new Error(`${req.method} ${req.url} router not existed`);
-    error.status = 404;
-    next(error);
-  });
-
-//error handler
-app.use((err, req, res, next) => {
-    res.locals.message = err.message;
-    res.locals.error = NODE_ENV !== 'production' ? err : {};
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: err
-    });
-});
+app.use(notFound);
+app.use(errorHandler);
 
 //Start server
 app.listen(app.get('port'), () => {

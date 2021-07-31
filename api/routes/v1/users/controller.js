@@ -1,6 +1,8 @@
 const {User} = require('../../../../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { USER_NOT_FOUND, INVALID_PASSWORD } = require('../../../../errors/index');
+const { createResponse } = require('../../../../utils/response');
 require('dotenv').config();
 
 const YOUR_SECRET_KEY = process.env.SECRET_KEY;
@@ -9,11 +11,8 @@ const createToken = async function(req, res, next) {
   const { userId, userPassword } = req.body;
   try {
     const user = await User.findOne({ where: {userId} });
-    if(user == null){
-      return res.status(400).json({
-        message: 'fail' //POST 요청이 실패했다는 의미로 400 상태와 함께 실패 메세지를 보낸다.
-      })
-    }
+    if(user == null)
+      next(USER_NOT_FOUND);
     else{
       bcrypt.compare(userPassword, user.userPassword, function(err, res2) {
         if(res2===true)
@@ -24,16 +23,9 @@ const createToken = async function(req, res, next) {
           expiresIn: '1h'
           });
           res.cookie(process.env.COOKIE_KEY, token);  //client 쿠키쪽에 user라는 이름의 토큰 값을 쿠키로 저장!
-          res.status(201).json({  //POST 요청이 성공했다는 의미로 201 상태와 함께 성공 메세지와 token을 보낸다.
-          message: 'success',
-          message2: 'login success',
-          token
-          });
+          res.json(createResponse(res, token));
         } else {
-          res.status(400).json({
-          message: 'fail', //POST 요청이 실패했다는 의미로 400 상태와 함께 실패 메세지를 보낸다.
-          message2: 'login fail'
-          })
+          next(INVALID_PASSWORD);
         }
       })
     }
