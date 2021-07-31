@@ -1,5 +1,7 @@
 const { default: axios } = require('axios');
 const {User, Member ,Course, MemberList} = require('../../../../models');
+const { createResponse } = require('../../../../utils/response');
+
 require('dotenv').config();
 
 const createMemberList = async(req,res,next)=>{
@@ -8,7 +10,7 @@ const createMemberList = async(req,res,next)=>{
         const course = await Course.findByPk(courseId);
         const memberList = await MemberList.create();
         await course.setMemberList(memberList);
-        res.json(memberList);
+        res.json(createResponse(res, memberList));
     } catch (error) {
         console.error(error);
         next(error);
@@ -30,7 +32,7 @@ const enrollMembers = async(req,res,next)=>{
         )
         const count = existed.length;     //response로 개수 정보도 함께 넘겨준다
         await memberList.addUsers(existed.map(item=>item));      //item에 다른 값들은 제외하고 userId로 찾는다
-        res.json({count});      
+        res.json(createResponse(res, {count}));      
     } catch (error) {
         console.error(error);
         next(error);

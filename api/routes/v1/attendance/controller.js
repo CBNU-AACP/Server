@@ -1,19 +1,17 @@
 const { Member } = require('../../../../models');
+const { createResponse } = require('../../../../utils/response');
 
 const updateAttendance = async (req, res, next) => {
   const { userId } = req.body;
   try {
     const members = await res.locals.courseDate.getMembers();
-    members.forEach(async function (value, index) { //함수 빼기 (메모리 누수!!! forEach 돌때마다 함수가 생김)
+    members.forEach(async function (value) { //함수 빼기 (메모리 누수!!! forEach 돌때마다 함수가 생김)
       try {
         let checkAttendance = await value.getUsers({ where: { userId: userId } });
-        console.log(checkAttendance);
         if (checkAttendance.length != 0) {
           const realMember = await Member.findByPk(value.id);
           realMember.update({ isChecked: true });
-          res.status(201).json({
-            message: "attendance success"
-          });
+          res.json(createResponse(res, realMember));
           return true;
         }
       } catch (error) {
