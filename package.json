@@ -12,6 +12,7 @@
     "fs": "0.0.1-security",
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
+    "mariadb": "^2.5.4",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "path": "^0.12.7",
