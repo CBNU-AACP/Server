@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { USER_NOT_FOUND, INVALID_PASSWORD } = require('../../../../errors/index');
 const { createResponse } = require('../../../../utils/response');
+const { Op } = require('sequelize');
 require('dotenv').config();
 
 const YOUR_SECRET_KEY = process.env.SECRET_KEY;
@@ -65,4 +66,18 @@ const createUser = async function(req, res, next) {
   }
 };
 
-module.exports = {createUser, createToken}
+const searchUser = async function(req,res,next) {
+  const {params:{value}} = req;
+  try {
+    const users = await User.findAll(
+      {where: {userId: {[Op.like]: "%"+value+"%"}},
+      attributes: ['userId', 'name', 'studentId']
+    });
+    res.json(createResponse(res, users));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {createUser, createToken, searchUser};
