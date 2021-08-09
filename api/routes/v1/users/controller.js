@@ -80,4 +80,16 @@ const searchUser = async function(req,res,next) {
   }
 };
 
-module.exports = {createUser, createToken, searchUser};
+const getUsers = async function(req,res,next) {
+  try {
+    const users = await User.findAll(
+      {attributes: ['userId', 'name', 'studentId']}
+    );
+    res.json(createResponse(res, users));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {createUser, createToken, searchUser, getUsers};
