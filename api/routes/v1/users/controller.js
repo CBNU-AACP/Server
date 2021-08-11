@@ -1,4 +1,4 @@
-const {User} = require('../../../../models');
+const {User, sequelize} = require('../../../../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { USER_NOT_FOUND, INVALID_PASSWORD } = require('../../../../errors/index');
@@ -66,11 +66,26 @@ const createUser = async function(req, res, next) {
   }
 };
 
-const searchUser = async function(req,res,next) {
+const searchUserId = async function(req,res,next) {
   const {params:{value}} = req;
   try {
     const users = await User.findAll(
       {where: {userId: {[Op.like]: "%"+value+"%"}},
+      attributes: ['userId', 'name', 'studentId']
+    });
+    res.json(createResponse(res, users));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+const searchUserName = async function(req,res,next) {
+  const {params:{value}} = req;
+  try {
+    let decodedValue = decodeURIComponent(value);
+    const users = await User.findAll(
+      {where: {name: {[Op.like]: "%"+decodedValue+"%"}},
       attributes: ['userId', 'name', 'studentId']
     });
     res.json(createResponse(res, users));
@@ -92,4 +107,18 @@ const getUsers = async function(req,res,next) {
   }
 };
 
-module.exports = {createUser, createToken, searchUser, getUsers};
+const getSomeUsers = async function(req, res, next) {
+  const {params: {userId}} = req;
+  try {
+    const users = await User.findAll({where: {userId: {
+      [Op.not]: userId
+    }},
+      attributes: ['userId', 'name', 'studentId']});
+      res.json(createResponse(res, users));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {createUser, createToken, searchUserId, searchUserName, getUsers, getSomeUsers};
