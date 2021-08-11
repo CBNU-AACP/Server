@@ -6,5 +6,6 @@ router.post('/register', controller.createUser);
 router.post('/login', controller.createToken);
 router.get('/userId/:value', controller.searchUser);
 router.get('/', controller.getUsers);
+router.get('/:userId', controller.getSomeUsers)
 
 module.exports = router;
