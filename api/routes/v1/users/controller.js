@@ -66,11 +66,26 @@ const createUser = async function(req, res, next) {
   }
 };
 
-const searchUser = async function(req,res,next) {
+const searchUserId = async function(req,res,next) {
   const {params:{value}} = req;
   try {
     const users = await User.findAll(
       {where: {userId: {[Op.like]: "%"+value+"%"}},
+      attributes: ['userId', 'name', 'studentId']
+    });
+    res.json(createResponse(res, users));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+const searchUserName = async function(req,res,next) {
+  const {params:{value}} = req;
+  try {
+    let decodedValue = decodeURIComponent(value);
+    const users = await User.findAll(
+      {where: {name: {[Op.like]: "%"+decodedValue+"%"}},
       attributes: ['userId', 'name', 'studentId']
     });
     res.json(createResponse(res, users));
@@ -106,4 +121,4 @@ const getSomeUsers = async function(req, res, next) {
   }
 };
 
-module.exports = {createUser, createToken, searchUser, getUsers, getSomeUsers};
+module.exports = {createUser, createToken, searchUserId, searchUserName, getUsers, getSomeUsers};
