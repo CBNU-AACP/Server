@@ -1,6 +1,7 @@
 const { default: axios } = require('axios');
 const {User, Member ,Course, MemberList} = require('../../../../models');
 const { createResponse } = require('../../../../utils/response');
+const { COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND } = require('../../../../errors/index');
 
 require('dotenv').config();
 
@@ -38,7 +39,22 @@ const enrollMembers = async(req,res,next)=>{
     }
 }
 
+const searchUsers = async(req, res, next) => {
+  const {params: {courseId}} = req;
+  try {
+    const course = await Course.findByPk(courseId);
+    if(!course) next(COURSE_NOT_FOUND);
+    const memberList = await course.getMemberList();
+    if(!memberList) next(MEMBERLIST_NOT_FOUND);
+    const users = await memberList.getUsers({attributes: ['userId', 'name', 'studentId']});
+    res.json(createResponse(res, users));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
 const deleteMembers = async(req,res,next)=>{
         //body에 넣을지 query에 넣을지 고민해봐야함
 }
-module.exports = {createMemberList, enrollMembers};
+module.exports = {createMemberList, enrollMembers, searchUsers};
