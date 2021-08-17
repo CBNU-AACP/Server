@@ -67,10 +67,10 @@ const createUser = async function(req, res, next) {
 };
 
 const searchUserId = async function(req,res,next) {
-  const {params:{value}} = req;
+  const {params:{userId}, query:{value}} = req;
   try {
     const users = await User.findAll(
-      {where: {userId: {[Op.like]: "%"+value+"%"}},
+      {where: {userId: {[Op.like]: "%"+value+"%", [Op.not]: userId}},
       attributes: ['userId', 'name', 'studentId']
     });
     res.json(createResponse(res, users));
@@ -81,11 +81,11 @@ const searchUserId = async function(req,res,next) {
 };
 
 const searchUserName = async function(req,res,next) {
-  const {params:{value}} = req;
+  const {params:{userId}, query:{value}} = req;
   try {
     let decodedValue = decodeURIComponent(value);
     const users = await User.findAll(
-      {where: {name: {[Op.like]: "%"+decodedValue+"%"}},
+      {where: {name: {[Op.like]: "%"+decodedValue+"%"}, userId: {[Op.not]: userId}},
       attributes: ['userId', 'name', 'studentId']
     });
     res.json(createResponse(res, users));
