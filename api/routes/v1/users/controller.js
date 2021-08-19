@@ -1,41 +1,26 @@
-const {User, sequelize} = require('../../../../models');
+const {User} = require('../../../../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { USER_NOT_FOUND, INVALID_PASSWORD } = require('../../../../errors/index');
 const { createResponse } = require('../../../../utils/response');
 const { Op } = require('sequelize');
-require('dotenv').config();
+const {SALT_ROUNDS, YOUR_SECRET_KEY, COOKIE_KEY} = require('../../../../env');
 
-const YOUR_SECRET_KEY = process.env.SECRET_KEY;
-
-const createToken = async function(req, res, next) {
-  const { userId, userPassword } = req.body;
+const Login = async(req, res, next)=>{
+  const {userId,userPassword} = req.body;
   try {
-    const user = await User.findOne({ where: {userId} });
-    if(user == null)
-      next(USER_NOT_FOUND);
-    else{
-      bcrypt.compare(userPassword, user.userPassword, function(err, res2) {
-        if(res2===true)
-        {
-          const token = jwt.sign({
-          userId: user.userId
-          }, YOUR_SECRET_KEY, {
-          expiresIn: '1h'
-          });
-          res.cookie(process.env.COOKIE_KEY, token);  //client 쿠키쪽에 user라는 이름의 토큰 값을 쿠키로 저장!
-          res.json(createResponse(res, token));
-        } else {
-          next(INVALID_PASSWORD);
-        }
-      })
-    }
+    const user = await User.findOne({where:{userId}});
+    if(!user) return next(USER_NOT_FOUND);
+    const match = bcrypt.compare(userPassword,user.userPassword);
+    if(!match) return next(INVALID_PASSWORD); 
+    const token = jwt.sign({userId: userId}, YOUR_SECRET_KEY, {expiresIn:'7d'});
+    res.cookie(COOKIE_KEY, token);
+    res.json(createResponse(res,token));
   } catch (error) {
     console.error(error);
     next(error);
   }
 };
-
 
 const createUser = async function(req, res, next) {
   try {

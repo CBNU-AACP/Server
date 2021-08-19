@@ -16,7 +16,7 @@ MYSQL_PORT =
 
 ## JWT SECRET KEY 설정
 
-SECRET_KEY = 
+YOUR_SECRET_KEY = access-token.private.key
 
 
 ## COOKIE KEY 설정
