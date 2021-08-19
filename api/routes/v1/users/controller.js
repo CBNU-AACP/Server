@@ -121,4 +121,16 @@ const getSomeUsers = async function(req, res, next) {
   }
 };
 
-module.exports = {createUser, createToken, searchUserId, searchUserName, getUsers, getSomeUsers};
+const putValidNum = async (req, res, next) => {
+  const {params:{userId}, body} = req;
+  try {
+    const user = await User.findByPk(userId);
+    await user.update(body);
+    res.json(createResponse(res));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {createUser, createToken, searchUserId, searchUserName, getUsers, getSomeUsers, putValidNum};
