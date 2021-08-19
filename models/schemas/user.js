@@ -16,17 +16,17 @@ module.exports = class User extends Sequelize.Model {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      count : {
+      courseCount : {
         type: Sequelize.INTEGER,
         allowNull : false,
         defaultValue : 0,
       },
-      phone : {
+      userPhoneNumber : {
         type : Sequelize.STRING(20),
         allowNull : false
       },
-      email : {
-        type : Sequelize.STRING(20),
+      userEmail : {
+        type : Sequelize.STRING(40),
         allowNull : false
       },
       studentId : {
@@ -34,7 +34,7 @@ module.exports = class User extends Sequelize.Model {
         allowNull: false,
       },            
       validNum : {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(20),
         allowNull: true,
       },            
       name : {
