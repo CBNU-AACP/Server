@@ -22,6 +22,8 @@ const errors = {
   // 404 Errors
   USER_NOT_FOUND: [404, '찾을 수 없는 유저입니다.'],
   COURSE_NOT_FOUND: [404, '찾을 수 없는 코스입니다.'],
+  USER_DUPLICATED: [404, '중복된 아이디입니다'],
+  EMAIL_DUPLICATED: [404, '중복된 이메일입니다'],
   MEMBERLIST_NOT_FOUND: [404, '찾을 수 없는 memberList입니다.'],
   NOT_FOUND: [404, '찾을 수 없는 요청입니다.'],
 
