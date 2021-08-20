@@ -7,23 +7,19 @@ const Sequelize = require('sequelize');
 module.exports = class User extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-      userId : {
+      userId: {
         type: Sequelize.STRING(20),
         allowNull: false,
         primaryKey: true,
       },
-      userPassword : {
+      userPassword: {
         type: Sequelize.STRING(100),
         allowNull: false,
       },
-      courseCount : {
-        type: Sequelize.INTEGER,
-        allowNull : false,
-        defaultValue : 0,
-      },
-      userPhoneNumber : {
-        type : Sequelize.STRING(20),
-        allowNull : false
+      count : {
+          type: Sequelize.INTEGER,
+          allowNull : false,
+          defaultValue : 0,
       },
       userEmail : {
         type : Sequelize.STRING(40),
@@ -33,8 +29,8 @@ module.exports = class User extends Sequelize.Model {
         type: Sequelize.STRING(20),
         allowNull: false,
       },            
-      validNum : {
-        type: Sequelize.STRING(20),
+      validNum: {
+        type: Sequelize.INTEGER,
         allowNull: true,
       },            
       name : {
@@ -55,7 +51,7 @@ module.exports = class User extends Sequelize.Model {
 
   static associate(db) {  //User와 Meber 1:1 관계 설정
     db.User.belongsToMany(db.Member, { through: 'UserMember'});
-    db.User.belongsToMany(db.MemberList, { through: 'UserMemberList', foreignKey: 'userId'});
+    db.User.belongsToMany(db.MemberList, { through: 'UserMemberList'});
     db.User.hasMany(db.Course, {foreignKey:'userId', sourceKey:'userId'});
   }
 };
