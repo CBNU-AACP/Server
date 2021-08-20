@@ -30,7 +30,7 @@ module.exports = class User extends Sequelize.Model {
         allowNull : false
       },
       studentId : {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(20),
         allowNull: false,
       },            
       validNum : {
