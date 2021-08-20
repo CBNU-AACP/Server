@@ -36,13 +36,13 @@ module.exports = class Course extends Sequelize.Model{
     static changeCount(db){
         db.Course.addHook('afterCreate',async(course,options)=>{
             const user = await db.User.findByPk(course.userId);
-            let count = user.count+1;
-            await user.update({count});
+            let courseCount = user.courseCount+1;
+            await user.update({courseCount});
         })
         db.Course.addHook('beforeDestroy',async(course,options)=>{
             const user = await db.User.findByPk(course.userId);
-            let count = user.count-1;
-            await user.update({count});
+            let courseCount = user.courseCount-1;
+            await user.update({courseCount});
         })
     }
 
