@@ -33,7 +33,7 @@ const createCourse = async(req,res,next)=>{
     try {
         const user = await User.findByPk(userId);
         if(!user) next(USER_NOT_FOUND);
-        let courseId = createCourseId(user.count, user.name);
+        let courseId = createCourseId(user.courseCount, user.name);
         const course = await Course.create({name,courseId,description,userId});       //body에는 name만 담기게 된다
         res.json(createResponse(res, course));
     } catch (error) {
