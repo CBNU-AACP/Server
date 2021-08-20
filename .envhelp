@@ -20,7 +20,7 @@ SALT_ROUNDS = 10
 ## JWT SECRET KEY 설정
 
 YOUR_SECRET_KEY = access-token.private.key
-(Online RSA KEY Generator 페이지에 들어가서 512bit의 key값 생성 후에 access-token.private.key를 만들어주세요)
+(Online RSA KEY Generator 페이지에 들어가서 512bit의 key값 생성 후에 access-token.private.key를 만든후 private key 복사 후 여기에도 적으세요)
 
 ## COOKIE KEY 설정
 
