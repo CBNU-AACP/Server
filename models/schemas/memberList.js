@@ -15,7 +15,7 @@ module.exports = class MemberList extends Sequelize.Model{
             });
 }
     static associate(db){
-      db.MemberList.belongsToMany(db.User, { through: 'UserMemberList'});
+      db.MemberList.belongsToMany(db.User, { through: 'UserMemberList', foreignKey: 'memberListId'});
       db.MemberList.belongsTo(db.Course, {foreignKey : "courseId", targetKey : "courseId"});
       db.MemberList.hasMany(db.Member, {foreignKey : "memberListId", sourceKey : "id"});
     }
