@@ -25,6 +25,7 @@ const errors = {
   USER_DUPLICATED: [404, '중복된 아이디입니다'],
   EMAIL_DUPLICATED: [404, '중복된 이메일입니다'],
   MEMBERLIST_NOT_FOUND: [404, '찾을 수 없는 memberList입니다.'],
+  MEMBER_NOT_FOUND: [404, '찾을 수 없는 member입니다.'],
   NOT_FOUND: [404, '찾을 수 없는 요청입니다.'],
 
   // 500 Errors
