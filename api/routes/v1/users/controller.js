@@ -5,7 +5,7 @@ const { USER_NOT_FOUND, INVALID_PASSWORD, USER_DUPLICATED, EMAIL_DUPLICATED } = 
 const { createResponse } = require('../../../../utils/response');
 const { Op } = require('sequelize');
 const {SALT_ROUNDS, YOUR_SECRET_KEY, COOKIE_KEY} = require('../../../../env');
-
+ 
 const login = async(req, res, next)=>{
   const {userId,userPassword} = req.body;
   try {
@@ -108,7 +108,12 @@ const getSomeUsers = async function(req, res, next) {
 
 const putValidNum = async (req, res, next) => {
   const {params:{userId}, body} = req;
+  let putValidNumNull = async () => {
+    const user = await User.findByPk(userId);
+    await user.update({validNum: null}); 
+  };
   try {
+    setTimeout(putValidNumNull, 15000);
     const user = await User.findByPk(userId);
     await user.update(body);
     res.json(createResponse(res));
