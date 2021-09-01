@@ -24,7 +24,7 @@ YOUR_SECRET_KEY = access-token.private.key
 
 ## COOKIE KEY 설정
 
-COOKIE_KEY =
+COOKIE_KEY = 
 
 ## SERVER URL 설정
 
