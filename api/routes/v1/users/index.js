@@ -10,5 +10,6 @@ router.get('/check/:value', controller.isDuplicated);
 router.get('/', controller.getUsers);
 router.get('/:userId', controller.getSomeUsers);
 router.put('/:userId', controller.putValidNum);
+router.get('/sms/:phone', controller.sendMessage);
 
 module.exports = router;
