@@ -11,7 +11,7 @@ const login = async(req, res, next)=>{
   try {
     const user = await User.findOne({where:{userId}});
     if(!user) return next(USER_NOT_FOUND);
-    const match = bcrypt.compare(userPassword,user.userPassword);
+    const match = await bcrypt.compare(userPassword,user.userPassword);
     if(!match) return next(INVALID_PASSWORD); 
     const token = jwt.sign({userId: userId}, YOUR_SECRET_KEY, {expiresIn:'7d'});
     res.cookie(COOKIE_KEY, token);
