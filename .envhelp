@@ -34,3 +34,11 @@ SERVER_URL =
 ## Development Level 혹은 Production Level 설정
 NODE_ENV=development
 #NODE_ENV=production
+
+
+# SMS 설정
+
+SMS_SERVICE_ID = 
+SMS_SECRET_KEY = 
+SMS_ACCESS_KEY = 
+MY_PHONE = 
