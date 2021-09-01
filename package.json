@@ -17,6 +17,7 @@
     "mysql2": "^2.2.5",
     "path": "^0.12.7",
     "sequelize": "^6.6.2",
+    "tar": "^6.1.11",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },
