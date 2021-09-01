@@ -33,16 +33,19 @@ const findOrCreateCourseDate = async(req,res,next)=>{
 }
 
 const customCourseId = (courseId) =>{
-    const currentDate = getCurrentDate();
-    return courseId + currentDate;
+  const currentDate = getCurrentDate();
+  return courseId + currentDate;
 }
 
 const getCurrentDate = () =>{
-    const now = new Date();
-    const month = (now.getMonth()+1).toString();
-    const date = now.getDate().toString();
-    const hours = now.getHours().toString();
-    return month+date+hours; 
+  const now = new Date();
+  let month = now.getMonth()+1;
+  month = month < 10 ? '0' + month.toString() : month.toString();
+  let date = now.getDate();
+  date = date < 10 ? '0' + date.toString() : date.toString();
+  let hours = now.getHours();
+  hours = hours < 10 ? '0' + hours.toString() : hours.toString();
+  return month + date + hours; 
 }
 
 module.exports = {findOrCreateCourseDate};
