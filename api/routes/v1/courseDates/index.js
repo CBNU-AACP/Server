@@ -3,5 +3,6 @@ const controller = require('./controller');
 const router = Router();
 
 router.get('/:courseId', controller.findOrCreateCourseDate);
+router.get('/getCourseDates/:courseId', controller.getCourseDates);
 
 module.exports = router;

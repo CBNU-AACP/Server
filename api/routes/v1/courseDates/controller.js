@@ -1,6 +1,7 @@
 const {CourseDate, Course, Member} = require('../../../../models');
-const { COURSE_NOT_FOUND } = require('../../../../errors/index');
+const { COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND } = require('../../../../errors/index');
 const { createResponse } = require('../../../../utils/response');
+const { Op } = require('sequelize');
 
 const findOrCreateCourseDate = async(req,res,next)=>{
     const {params:{courseId}} = req;
@@ -48,4 +49,27 @@ const getCurrentDate = () =>{
   return month + date + hours; 
 }
 
-module.exports = {findOrCreateCourseDate};
+const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭제된 user들에 대한 db 삭제도 같이 이루어지는 것! (즉, 출석부 조회 할 때 무의미한 db가 삭제됌)
+  const {params: {courseId}} = req;
+  try {
+    const course = await Course.findByPk(courseId);
+    if(!course) next(COURSE_NOT_FOUND);
+    const memberList = await course.getMemberList();
+    if(!memberList) next(MEMBERLIST_NOT_FOUND);
+    const notRealMembers = await memberList.getMembers();
+    const users = await memberList.getUsers({attributes: ['userId']});
+    const realUsers = await users.map(user => user.userId);
+
+    for(const notRealMember of notRealMembers) {  //여기가 최근 멤버 리스트와 비교하면서 무의미한 member를 db에서 청소.
+      const removedMember = await notRealMember.getUsers({where: {userId: {[Op.notIn]: realUsers}}});
+      if(removedMember.length != 0)
+        await Member.destroy({where: {id: notRealMember.id}});
+    }
+    res.json(createResponse(res));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {findOrCreateCourseDate, getCourseDates};
