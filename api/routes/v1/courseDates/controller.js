@@ -1,5 +1,5 @@
 const {CourseDate, Course, Member} = require('../../../../models');
-const { COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND } = require('../../../../errors/index');
+const { COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND, COURSEDATE_NOT_FOUND } = require('../../../../errors/index');
 const { createResponse } = require('../../../../utils/response');
 const { Op } = require('sequelize');
 
@@ -56,16 +56,46 @@ const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭
     if(!course) next(COURSE_NOT_FOUND);
     const memberList = await course.getMemberList();
     if(!memberList) next(MEMBERLIST_NOT_FOUND);
-    const notRealMembers = await memberList.getMembers();
+    let notRealMembers = await memberList.getMembers();
     const users = await memberList.getUsers({attributes: ['userId']});
     const realUsers = await users.map(user => user.userId);
 
     for(const notRealMember of notRealMembers) {  //여기가 최근 멤버 리스트와 비교하면서 무의미한 member를 db에서 청소.
       const removedMember = await notRealMember.getUsers({where: {userId: {[Op.notIn]: realUsers}}});
-      if(removedMember.length != 0)
+      if(removedMember.length != 0) 
         await Member.destroy({where: {id: notRealMember.id}});
     }
-    res.json(createResponse(res));
+    
+    const courseDates = await CourseDate.findAll({where: {courseDateId: {[Op.like]: courseId+"%"}}}); //위에서 member DB를 정리하면서, 어떤 courseDate에 엮인 member가 하나도 없는 경우가 생길 수 있다. 그런걸 제거해줌.
+    for(const courseDate of courseDates) {
+      let members = await courseDate.getMembers();
+      if(members.length == 0)
+        await CourseDate.destroy({where: {courseDateId: courseDate.courseDateId}});
+    }
+    
+    const finalCourseDates = await CourseDate.findAll({where: {courseDateId: {[Op.like]: courseId+"%"}}});
+    if(finalCourseDates.length == 0)
+      next(COURSEDATE_NOT_FOUND);
+    
+    for(const finalCourseDate of finalCourseDates) {  //정리된 CourseDate를 완전 탐색으로 돌면서, 첫 수업 이후 뒤늦게 추가된 멤버들에 대한 출석 정보를 false로 초기화해서 생성.
+      for(const user of users) {
+        const checkMembers = await finalCourseDate.getMembers();
+        let existed = false;
+        for(const checkMember of checkMembers) {
+          const check = await checkMember.getUsers({where: {userId: user.userId}});
+          if(check.length != 0)
+            existed = true;
+        }
+        if(!existed) {
+          const member = await Member.create();
+          await member.update({isChecked: false});
+          await user.addMember(member);
+          await memberList.addMember(member);
+          await finalCourseDate.addMember(member);
+        }
+      }
+    }
+    res.json(createResponse(res, finalCourseDates));
   } catch (error) {
     console.error(error);
     next(error);
