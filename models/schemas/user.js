@@ -53,10 +53,10 @@ module.exports = class User extends Sequelize.Model {
     });
   }
 
-  static associate(db) {  //User와 Meber 1:1 관계 설정
-    db.User.belongsToMany(db.Member, { through: 'UserMember'});
+  static associate(db) {
+    db.User.hasMany(db.Member, {foreignKey: "userId", sourceKey: "userId"});
     db.User.belongsToMany(db.MemberList, { through: 'UserMemberList', foreignKey: 'userId'});
-    db.User.hasMany(db.Course, {foreignKey:'userId', sourceKey:'userId'});
+    db.User.hasMany(db.Course, {foreignKey: "userId", sourceKey: "userId"});
   }
 };
 

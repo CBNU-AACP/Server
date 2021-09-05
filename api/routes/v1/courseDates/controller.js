@@ -61,8 +61,8 @@ const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭
     const realUsers = await users.map(user => user.userId);
 
     for(const notRealMember of notRealMembers) {  //여기가 최근 멤버 리스트와 비교하면서 무의미한 member를 db에서 청소.
-      const removedMember = await notRealMember.getUsers({where: {userId: {[Op.notIn]: realUsers}}});
-      if(removedMember.length != 0) 
+      const removedMember = await notRealMember.getUser({where: {userId: {[Op.notIn]: realUsers}}});
+      if(removedMember) 
         await Member.destroy({where: {id: notRealMember.id}});
     }
     
@@ -82,8 +82,8 @@ const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭
         const checkMembers = await finalCourseDate.getMembers();
         let existed = false;
         for(const checkMember of checkMembers) {
-          const check = await checkMember.getUsers({where: {userId: user.userId}});
-          if(check.length != 0)
+          const check = await checkMember.getUser({where: {userId: user.userId}});
+          if(check)
             existed = true;
         }
         if(!existed) {
