@@ -4,5 +4,6 @@ const router = Router();
 const { checkAttendance } = require('../../../../middlewares/checkAttendance');
 
 router.patch('/attend', checkAttendance, controller.updateAttendance);
+router.get('/getAttendanceBook/:courseId', controller.getAttendanceBook);
 
 module.exports = router;
