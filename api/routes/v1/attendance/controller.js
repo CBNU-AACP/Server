@@ -29,7 +29,7 @@ const getAttendanceBook = async (req,res,next) => {
     if(!course) next(COURSE_NOT_FOUND);
     const memberList = await course.getMemberList();
     if(!memberList) next(MEMBERLIST_NOT_FOUND);
-    const users = await memberList.getUsers({attributes: ['name', 'studentId'], order: [['name', 'ASC']]}); //이름 가나다 순으로 정렬된 users
+    const users = await memberList.getUsers({attributes: ['name', 'studentId', 'userId'], order: [['name', 'ASC']]}); //이름 가나다 순으로 정렬된 users
     attendanceBook.push(users);
     const courseDates = await CourseDate.findAll({where: {courseDateId: {[Op.like]: courseId+"%"}}, order: [['courseDateId', 'ASC']]});
     if(courseDates.length == 0)
