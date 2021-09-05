@@ -1,10 +1,11 @@
 const makeSignature = require('./signature');
 const {SMS_ACCESS_KEY, SMS_SERVICE_ID, MY_PHONE} = require('../../env');
+const {makeKey} = require('./authorizeKey');
 
 const publishMessage = (phone) =>{
     const signature = makeSignature();
 	const date = Date.now().toString();
-	const number = 0990;
+	const number = makeKey();
 	const doc = {
 		url : `https://sens.apigw.ntruss.com/sms/v2/services/${SMS_SERVICE_ID}/messages`,
 		headers : {
