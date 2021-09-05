@@ -8,8 +8,8 @@ const updateAttendance = async (req, res, next) => {
   try {
     const members = await res.locals.courseDate.getMembers();
     for(const member of members) {
-      const checkAttendance = await member.getUsers({ where: { userId }});
-      if(checkAttendance.length != 0) {
+      const checkAttendance = await member.getUser({ where: { userId }});
+      if(checkAttendance) {
         await member.update({ isChecked: true });
         return res.json(createResponse(res, member));
       }
@@ -39,8 +39,8 @@ const getAttendanceBook = async (req,res,next) => {
       let isCheckeds = [];
       for(const user of users) {
         for(const member of members) {
-          const check = await member.getUsers({where: {studentId: user.studentId}});
-          if(check.length != 0) {
+          const check = await member.getUser({where: {studentId: user.studentId}});
+          if(check) {
             isCheckeds.push(member.isChecked);
             break;
           }
