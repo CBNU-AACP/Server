@@ -73,7 +73,7 @@ const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭
         await CourseDate.destroy({where: {courseDateId: courseDate.courseDateId}});
     }
     
-    const finalCourseDates = await CourseDate.findAll({where: {courseDateId: {[Op.like]: courseId+"%"}}});
+    const finalCourseDates = await CourseDate.findAll({where: {courseDateId: {[Op.like]: courseId+"%"}}, order: [['courseDateId', 'ASC']]});
     if(finalCourseDates.length == 0)
       next(COURSEDATE_NOT_FOUND);
     
