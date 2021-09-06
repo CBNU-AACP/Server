@@ -1,5 +1,5 @@
 const {CourseDate, Course, Member} = require('../../../../models');
-const { COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND, COURSEDATE_NOT_FOUND } = require('../../../../errors/index');
+const { COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND, COURSEDATE_NOT_FOUND, COURSEDATE_DUPLICATED } = require('../../../../errors/index');
 const { createResponse } = require('../../../../utils/response');
 const { Op } = require('sequelize');
 
@@ -102,4 +102,19 @@ const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭
   }
 };
 
-module.exports = {findOrCreateCourseDate, getCourseDates};
+const putCourseDates = async(req,res,next) => {
+  const {params: {courseDateId}, body} = req;
+  try {
+    const courseDate = await CourseDate.findByPk(courseDateId);
+    if(!courseDate) return next(COURSEDATE_NOT_FOUND);
+    const updatedCourseDate = await CourseDate.findByPk(body.courseDateId);
+    if(updatedCourseDate) return next(COURSEDATE_DUPLICATED);
+    await courseDate.update(body);
+    res.json(createResponse(res, courseDate));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {findOrCreateCourseDate, getCourseDates, putCourseDates};
