@@ -5,8 +5,6 @@ const { USER_NOT_FOUND, INVALID_PASSWORD, USER_DUPLICATED, EMAIL_DUPLICATED } = 
 const { createResponse } = require('../../../../utils/response');
 const { Op } = require('sequelize');
 const {SALT_ROUNDS, YOUR_SECRET_KEY, COOKIE_KEY} = require('../../../../env');
-const {publishMessage} = require('../../../../utils/smsService');
-const { default: axios } = require('axios');
 
 const login = async(req, res, next)=>{
   const {userId,userPassword} = req.body;
@@ -125,20 +123,4 @@ const putValidNum = async (req, res, next) => {
   }
 };
 
-const sendMessage = async(req,res,next)=>{
-  const {params:{phone}} = req;
-  try {
-    const doc = publishMessage(phone.toString());
-    await axios({
-        method: "POST",
-        json: true,
-        url: doc.url.toString(),
-        headers: doc.headers,
-        data: doc.data
-    })
-    res.json(createResponse(res));
-  } catch (error) {
-    next(error);
-  }
-}
-module.exports = {login, isDuplicated, register, searchUserId, searchUserName, getUsers, getSomeUsers, putValidNum, sendMessage};
+module.exports = {login, isDuplicated, register, searchUserId, searchUserName, getUsers, getSomeUsers, putValidNum};

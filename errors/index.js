@@ -28,7 +28,12 @@ const errors = {
   MEMBER_NOT_FOUND: [404, '찾을 수 없는 member입니다.'],
   COURSEDATE_NOT_FOUND: [404, 'COURSEDATE가 존재하지 않습니다.'],
   NOT_FOUND: [404, '찾을 수 없는 요청입니다.'],
-
+  EXCEEDED_SMS_COUNT : [404, '하루 전송 건 수를 초과했습니다'],
+  EXCEEDED_KEY_COUNT : [404, '하루 인증키 시도 횟수를 초과했습니다'],
+  INVALID_CERTIFICATION_KEY : [404, '유효하지 않은 인증키입니다'],
+  CERTIFICATION_KEY_EXPIRED : [404, '유효 시간이 지났습니다'],
+  CERTIFICATION_INFO_NOT_EXISTED : [404, '해당 정보가 존재하지 않습니다'],
+  
   // 500 Errors
   SERVER_ERROR: [500, '서버 에러.'],
 };
