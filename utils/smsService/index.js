@@ -1,10 +1,9 @@
 const makeSignature = require('./signature');
 const {SMS_ACCESS_KEY, SMS_SERVICE_ID, MY_PHONE} = require('../../env');
 
-const publishMessage = (phone) =>{
+const publishMessage = (phone, number) =>{
     const signature = makeSignature();
 	const date = Date.now().toString();
-	const number = 0990;
 	const doc = {
 		url : `https://sens.apigw.ntruss.com/sms/v2/services/${SMS_SERVICE_ID}/messages`,
 		headers : {
@@ -17,7 +16,7 @@ const publishMessage = (phone) =>{
 			'type' : 'SMS',
 			'countryCode' : '82',
 			'from' : `${MY_PHONE.toString()}`,
-			'content' : `[체크메이트] 인증번호 ${number} 입니다.`,
+			'content' : `[체크메이트] 인증번호 ${number.toString()} 입니다.`,
 			'messages' : [
 				{
 					'to' : `${phone}`
