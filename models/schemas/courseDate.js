@@ -3,6 +3,11 @@ const Sequelize = require('sequelize');
 module.exports = class CourseDate extends Sequelize.Model{ 
     static init(sequelize){
         return super.init({
+             courseDatePK : {
+               type: Sequelize.INTEGER,
+               autoIncrement: true,
+               primaryKey : true
+             },
              courseDateId : {
                 type: Sequelize.STRING(30),
                 allowNull : true,
@@ -21,6 +26,6 @@ module.exports = class CourseDate extends Sequelize.Model{
     }
 
     static associate(db){
-        db.CourseDate.hasMany(db.Member, {foreignKey : "courseDateId", sourceKey : "courseDateId"});
+        db.CourseDate.hasMany(db.Member, {foreignKey : "courseDatePK", sourceKey : "courseDatePK"});
     }
 };

@@ -22,6 +22,6 @@ module.exports = class Member extends Sequelize.Model{
     static associate(db) {  //User와 Meber 1:1 관계 설정
         db.Member.belongsTo(db.User, {foreignKey: "userId", targetKey: "userId"});
         db.Member.belongsTo(db.MemberList, {foreignKey: "memberListId", targetKey: "id"});
-        db.Member.belongsTo(db.CourseDate, {foreignKey: "courseDateId", targetKey: "courseDateId"});
+        db.Member.belongsTo(db.CourseDate, {foreignKey: "courseDatePK", targetKey: "courseDatePK"});
     }
 };

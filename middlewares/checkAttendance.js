@@ -9,10 +9,10 @@ const checkAttendance = async (req, res, next) => {
       next(USER_NOT_FOUND);
     if (user.validNum != validNum)  //사용자가 보내온 QR code가 유효하지 않은 경우
       next(INVALID_QR_CODE);
-    const courseDate = await CourseDate.findByPk(courseDateId);
+    const courseDate = await CourseDate.findAll({where: {courseDateId}});
     if (!courseDate) 
       next(INVALID_COURSE_DATE_ID);
-    res.locals.courseDate = courseDate;
+    res.locals.courseDate = courseDate[0];
     next();
   } catch (error) {
     console.error(error);
