@@ -18,7 +18,8 @@ const findOrCreateCourseDate = async(req,res,next)=>{
         const users = await memberList.getUsers();
 
         users.forEach(async element => {
-          const checkDuplicatedUser = await element.getMembers({where: {courseDateId}});
+          const tempCourseDate = await CourseDate.findAll({where: {courseDateId}});
+          const checkDuplicatedUser = await element.getMembers({where: {courseDatePK: tempCourseDate[0].courseDatePK}});
           if(checkDuplicatedUser.length == 0) { //이미 똑같은 courseDateId로 각각의 User들에 대한 Member가 존재하는 경우에 대한 중복 방지를 위한 처리과정
             let member = await Member.create();
             await courseDate[0].addMember(member);
@@ -105,12 +106,13 @@ const getCourseDates = async(req,res,next) => { //여기서 memberList에서 삭
 const putCourseDates = async(req,res,next) => {
   const {params: {courseDateId}, body} = req;
   try {
-    const courseDate = await CourseDate.findByPk(courseDateId);
-    if(!courseDate) return next(COURSEDATE_NOT_FOUND);
-    const updatedCourseDate = await CourseDate.findByPk(body.courseDateId);
-    if(updatedCourseDate) return next(COURSEDATE_DUPLICATED);
-    await courseDate.update(body);
-    res.json(createResponse(res, courseDate));
+    const courseDate = await CourseDate.findAll({where: {courseDateId}});
+    if(courseDate.length == 0) return next(COURSEDATE_NOT_FOUND);
+    let updatedCourseDate = await CourseDate.findAll({where: {courseDateId: body.courseDateId}});
+    if(updatedCourseDate.length != 0) return next(COURSEDATE_DUPLICATED);
+    await CourseDate.update(body, {where: {courseDateId}});
+    updatedCourseDate = await CourseDate.findAll({where: {courseDateId: body.courseDateId}});
+    res.json(createResponse(res, updatedCourseDate[0]));
   } catch (error) {
     console.error(error);
     next(error);
