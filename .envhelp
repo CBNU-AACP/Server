@@ -21,6 +21,7 @@ SALT_ROUNDS = 10
 
 YOUR_SECRET_KEY = access-token.private.key
 (Online RSA KEY Generator 페이지에 들어가서 512bit의 key값 생성 후에 access-token.private.key를 만드세요)
+JWT_AUTORIZATION_KEY = aacp_auth
 
 ## COOKIE KEY 설정
 
@@ -43,3 +44,4 @@ SMS_SECRET_KEY =
 SMS_ACCESS_KEY = 
 MY_PHONE = 
 AUTHORIZE_KEY = 
+
