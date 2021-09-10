@@ -55,4 +55,24 @@ const getAttendanceBook = async (req,res,next) => {
   }
 };
 
-module.exports = { updateAttendance, getAttendanceBook };
+const putAttendanceBook = async (req,res,next) => {
+  const datas = req.body.attendanceBook;
+  try {
+    for(const data of datas) {
+      const courseDateId = data[0];
+      const userId = data[1];
+      const isChecked = data[2];
+      const courseDate = await CourseDate.findAll({where: {courseDateId}});
+      if(courseDate.length == 0) next(COURSEDATE_NOT_FOUND);
+      const member = await courseDate[0].getMembers({where: {userId}});
+      if(member.length == 0) next(MEMBER_NOT_FOUND);
+      await member[0].update({isChecked});
+    }
+    res.json(createResponse(res));
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = { updateAttendance, getAttendanceBook, putAttendanceBook };
