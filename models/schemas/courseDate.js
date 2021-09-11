@@ -11,7 +11,7 @@ module.exports = class CourseDate extends Sequelize.Model{
              courseDateId : {
                 type: Sequelize.STRING(30),
                 allowNull : true,
-                primaryKey : true,
+                unique: true
             }
         },{
             sequelize,
