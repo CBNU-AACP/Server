@@ -15,7 +15,7 @@ const login = async(req, res, next)=>{
     if(!match) return next(INVALID_PASSWORD); 
     const token = jwt.sign({userId: userId}, YOUR_SECRET_KEY, {expiresIn:'7d'});
     res.cookie(COOKIE_KEY, token);
-    res.json(createResponse(res,token));
+    res.json(createResponse(res,{token,userId}));
   } catch (error) {
     console.error(error);
     next(error);
