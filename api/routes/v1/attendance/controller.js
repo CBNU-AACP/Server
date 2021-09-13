@@ -39,7 +39,7 @@ const getAttendanceBook = async (req,res,next) => {
       let isCheckeds = [];
       for(const user of users) {
         for(const member of members) {
-          const check = await member.getUser({where: {studentId: user.studentId}});
+          const check = await member.getUser({where: {userId: user.userId}});
           if(check) {
             isCheckeds.push(member.isChecked);
             break;
