@@ -6,6 +6,7 @@ const cors = require('cors');
 const { stream } = require('./errors/winston');
 const { IS_DEV, PORT, NODE_ENV } = require('./env');
 const { notFound, errorHandler } = require('./errors/handler');
+const Socket = require('./api/socket/');
 
 const app = express();
 
@@ -31,7 +32,10 @@ app.use(notFound);
 app.use(errorHandler);
 
 //Start server
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), () => {
     console.log(
         `Listening http://localhost:${app.get('port')} in ${app.get('env')} mode!!!`);
 });
+
+//Start socket
+Socket(server);
