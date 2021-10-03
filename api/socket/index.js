@@ -7,8 +7,8 @@ const {join} = require('path');
 // socket.io의 계층 구조 : socket.io -> 네임 스페이스 -> 방 
 
 module.exports = (server) =>{       
-    const io = SocketIO(server, {path: 'socket.io'});       //해당 path에 따라서 클라와의 소켓 통로를 만든다
+    const io = SocketIO(server, {path: '/socket.io'});       //해당 path에 따라서 클라와의 소켓 통로를 만든다
     readdirSync(join(__dirname))
         .filter(dir=> statSync(join(__dirname, dir)).isDirectory())     //하위 디렉토리들만을 filtering
-        .forEach(dir=> io.of(`/${dir}`));                               //해당 디렉토리이름으로된 네임스페이스를 만든다
+        .forEach(dir=> require(join(__dirname, dir))(io))               //네임 스페이스로된 폴더 아래 index.js를 실행
 }

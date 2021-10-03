@@ -106,21 +106,4 @@ const getSomeUsers = async function(req, res, next) {
   }
 };
 
-const putValidNum = async (req, res, next) => {
-  const {params:{userId}, body} = req;
-  let putValidNumNull = async () => {
-    const user = await User.findByPk(userId);
-    await user.update({validNum: null}); 
-  };
-  try {
-    setTimeout(putValidNumNull, 15000);
-    const user = await User.findByPk(userId);
-    await user.update(body);
-    res.json(createResponse(res));
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
-
-module.exports = {login, isDuplicated, register, searchUserId, searchUserName, getUsers, getSomeUsers, putValidNum};
+module.exports = {login, isDuplicated, register, searchUserId, searchUserName, getUsers, getSomeUsers};

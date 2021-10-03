@@ -9,6 +9,5 @@ router.get('/name/:userId', controller.searchUserName);
 router.get('/check/:value', controller.isDuplicated);
 router.get('/', controller.getUsers);
 router.get('/:userId', controller.getSomeUsers);
-router.put('/:userId', controller.putValidNum);
 
 module.exports = router;
