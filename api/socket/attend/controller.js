@@ -1,4 +1,4 @@
-const {User, Member} = require('../../../models');
+const {User, Member, CourseDate} = require('../../../models');
 const exceptionHandling = require('./checkAttendance');
 
 const updateValidNum = async(userId, validNum)=>{        //이전의 putValidNum 함수
@@ -19,7 +19,8 @@ const updateAttendance = async(userId, validNum, courseDateId)=>{
         try {
             const result = await exceptionHandling(userId, validNum, courseDateId);
             if(result){
-                await Member.update({isChecked:true},{where:{userId, courseDateId}});
+                const courseDate = await CourseDate.findOne({where:{courseDateId}});
+                await Member.update({isChecked:true},{where:{courseDatePK:courseDate.dataValues.courseDatePK}});
                 resolve(result);
             }
             else reject(result);

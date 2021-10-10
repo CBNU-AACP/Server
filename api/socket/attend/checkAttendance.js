@@ -6,7 +6,6 @@ module.exports = async(userId, validNum, courseDateId) => {     //이전의 예�
             const user = await User.findByPk(userId);
             if(!user) return reject("USER_NOT_FOUND");
             if(user.validNum != validNum) return reject("INVALID_QR_CODE");
-            console.log({courseDateId});
             const courseDate = await CourseDate.findOne({where:{courseDateId}});
             if(!courseDate) return reject("INVALID_COURSE_DATE_ID");
             resolve(true);
