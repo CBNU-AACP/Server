@@ -3,24 +3,6 @@ const { createResponse } = require('../../../../utils/response');
 const { MEMBER_NOT_FOUND, COURSE_NOT_FOUND, MEMBERLIST_NOT_FOUND, COURSEDATE_NOT_FOUND } = require('../../../../errors/index'); 
 const { Op } = require('sequelize');
 
-const updateAttendance = async (req, res, next) => {
-  const { userId } = req.body;
-  try {
-    const members = await res.locals.courseDate.getMembers();
-    for(const member of members) {
-      const checkAttendance = await member.getUser({ where: { userId }});
-      if(checkAttendance) {
-        await member.update({ isChecked: true });
-        return res.json(createResponse(res, member));
-      }
-    }
-    next(MEMBER_NOT_FOUND);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-}
-
 const getAttendanceBook = async (req,res,next) => {
   const {params: {courseId}} = req;
   try {
@@ -75,4 +57,4 @@ const putAttendanceBook = async (req,res,next) => {
   }
 };
 
-module.exports = { updateAttendance, getAttendanceBook, putAttendanceBook };
+module.exports = { getAttendanceBook, putAttendanceBook };
